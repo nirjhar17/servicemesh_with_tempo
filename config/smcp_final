@@ -1,0 +1,30 @@
+apiVersion: maistra.io/v2
+kind: ServiceMeshControlPlane
+metadata:
+  name: basic
+  namespace: istio-system
+spec:
+  addons:
+    grafana:
+      enabled: true
+    kiali:
+      enabled: true
+      name: kiali
+  gateways:
+    openshiftRoute:
+      enabled: false
+  meshConfig:
+    extensionProviders:
+    - name: tempo
+      zipkin:
+        port: 9411
+        service: tempo-simplest-distributor.tracing-system.svc.cluster.local
+  profiles:
+  - default
+  security:
+    identity:
+      type: ThirdParty
+  tracing:
+    sampling: 10000
+    type: None
+  version: v2.5
